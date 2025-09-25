@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 AML System Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.3) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .login-header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .blockchain-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-left: 50px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-top: 12px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .error-message {
+            background: #ff4757;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .demo-credentials {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .demo-credentials h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e1e5e9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .credential-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .credential-item .username {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .credential-item .password {
+            font-family: 'Courier New', monospace;
+            color: #666;
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .loading .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+            
+            .login-header h1 {
+                font-size: 2rem;
+            }
+            
+            .blockchain-icon {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="blockchain-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>🔗 AML System</h1>
+            <p class="subtitle">Blockchain Anti-Money Laundering Detection Platform</p>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div style="position: relative;">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Enter your username" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div style="position: relative;">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Enter your password" autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span id="loginText">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </span>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                </div>
+            </button>
+        </form>
+
+        <div class="demo-credentials">
+            <h3><i class="fas fa-key"></i> Demo Credentials</h3>
+            <div class="credential-item" onclick="fillCredentials('admin', 'admin123')">
+                <span class="username">admin</span>
+                <span class="password">admin123</span>
+            </div>
+            <div class="credential-item" onclick="fillCredentials('user', 'password')">
+                <span class="username">user</span>
+                <span class="password">password</span>
+            </div>
+            <div class="credential-item" onclick="fillCredentials('demo', 'demo123')">
+                <span class="username">demo</span>
+                <span class="password">demo123</span>
+            </div>
+            <div class="credential-item" onclick="fillCredentials('aml_analyst', 'analyst2024')">
+                <span class="username">aml_analyst</span>
+                <span class="password">analyst2024</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Secure access to blockchain AML detection system</p>
+            <p>Powered by <a href="#" onclick="return false;">Advanced ML Analytics</a></p>
+        </div>
+    </div>
+
+    <script>
+        function fillCredentials(username, password) {
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = password;
+            
+            // Add visual feedback
+            const credentialItems = document.querySelectorAll('.credential-item');
+            credentialItems.forEach(item => item.style.background = 'white');
+            event.target.closest('.credential-item').style.background = '#e7f3ff';
+            
+            // Focus on login button
+            document.getElementById('loginBtn').focus();
+        }
+
+        // Handle form submission with loading animation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            const loading = document.getElementById('loading');
+            
+            loginBtn.disabled = true;
+            loginText.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // Re-enable after 5 seconds if still on page (error case)
+            setTimeout(() => {
+                if (loginBtn.disabled) {
+                    loginBtn.disabled = false;
+                    loginText.style.display = 'block';
+                    loading.style.display = 'none';
+                }
+            }, 5000);
+        });
+
+        // Add enter key support for credential items
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('credential-item')) {
+                e.target.click();
+            }
+        });
+
+        // Auto-focus username field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('username').focus();
+        });
+    </script>
+</body>
+</html>

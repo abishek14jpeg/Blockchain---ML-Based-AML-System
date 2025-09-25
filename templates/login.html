@@ -1,0 +1,428 @@
+<!DOC    <title>🔗 Blockchain AML System - Login</title>YPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>� Blockchain AML System - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo .icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .flash-error {
+            background: #fee;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        .flash-success {
+            background: #f0fff4;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-left: 50px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-top: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .demo-credentials {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .demo-credentials h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .credential-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .credential-item .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .credential-item .username {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .credential-item .role {
+            font-size: 0.8rem;
+            color: #666;
+            background: #f1f3f4;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .credential-item .password {
+            font-family: 'Courier New', monospace;
+            color: #666;
+            background: #f8f9fa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <div class="icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>AML System</h1>
+            <p>Blockchain Anti-Money Laundering Detection</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div style="position: relative;">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Enter your username" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div style="position: relative;">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Enter your password" autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn" id="loginBtn">
+                <span id="loginText">
+                    <i class="fas fa-sign-in-alt"></i> Sign In to Dashboard
+                </span>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                </div>
+            </button>
+        </form>
+
+        <div class="demo-credentials">
+            <h4><i class="fas fa-key"></i> Demo Accounts (Click to auto-fill)</h4>
+            
+            <div class="credential-item" onclick="fillCredentials('admin', 'admin123')">
+                <div class="user-info">
+                    <i class="fas fa-user-shield" style="color: #dc3545;"></i>
+                    <div>
+                        <div class="username">admin</div>
+                        <div class="role">Administrator</div>
+                    </div>
+                </div>
+                <span class="password">admin123</span>
+            </div>
+
+            <div class="credential-item" onclick="fillCredentials('user', 'password')">
+                <div class="user-info">
+                    <i class="fas fa-user" style="color: #28a745;"></i>
+                    <div>
+                        <div class="username">user</div>
+                        <div class="role">Standard User</div>
+                    </div>
+                </div>
+                <span class="password">password</span>
+            </div>
+
+            <div class="credential-item" onclick="fillCredentials('demo', 'demo123')">
+                <div class="user-info">
+                    <i class="fas fa-user-tag" style="color: #ffc107;"></i>
+                    <div>
+                        <div class="username">demo</div>
+                        <div class="role">Demo Account</div>
+                    </div>
+                </div>
+                <span class="password">demo123</span>
+            </div>
+
+            <div class="credential-item" onclick="fillCredentials('aml_analyst', 'analyst2024')">
+                <div class="user-info">
+                    <i class="fas fa-chart-line" style="color: #6f42c1;"></i>
+                    <div>
+                        <div class="username">aml_analyst</div>
+                        <div class="role">AML Analyst</div>
+                    </div>
+                </div>
+                <span class="password">analyst2024</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🔒 Secure blockchain-based AML detection system</p>
+        </div>
+    </div>
+
+    <script>
+        function fillCredentials(username, password) {
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = password;
+            
+            // Visual feedback
+            const items = document.querySelectorAll('.credential-item');
+            items.forEach(item => item.style.background = 'white');
+            event.target.closest('.credential-item').style.background = '#e7f3ff';
+            
+            // Focus on login button
+            document.getElementById('loginBtn').focus();
+        }
+
+        // Handle form submission with loading animation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            const loading = document.getElementById('loading');
+            
+            loginBtn.disabled = true;
+            loginText.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // Re-enable after timeout if still on page
+            setTimeout(() => {
+                if (loginBtn.disabled) {
+                    loginBtn.disabled = false;
+                    loginText.style.display = 'block';
+                    loading.style.display = 'none';
+                }
+            }, 5000);
+        });
+
+        // Auto-focus username field
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('username').focus();
+        });
+    </script>
+</body>
+</html>
